@@ -1,0 +1,323 @@
+/* Internal iPhone app chrome: edge-to-edge landscape map, no page scroll, no legend. */
+
+html, body {
+  background: #0A0A0A !important;
+  color: #fff;
+  width: 100% !important;
+  width: 100dvw !important;
+  height: 100% !important;
+  height: 100dvh !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  position: fixed !important;
+  inset: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  touch-action: none;
+  -webkit-overflow-scrolling: auto;
+}
+
+/* Header on top, map + right lot panel fill the remaining height. No page scroll. */
+.layout {
+  position: relative !important;
+  inset: auto !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  display: grid !important;
+  grid-template-columns: 1fr var(--sb-width, 40vw) !important;
+  width: 100% !important;
+  width: 100dvw !important;
+  height: auto !important;
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  overflow: hidden !important;
+  z-index: 1;
+}
+.mapwrap {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0;
+  min-height: 0;
+  background: #ede8dc !important;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+#mapContainer, #overlay, #planObj {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Compact bar spans the top; the map and lot panel sit below it. */
+header {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  z-index: 200;
+  flex: 0 0 auto;
+  height: auto !important;
+  min-height: 48px;
+  padding-top: env(safe-area-inset-top) !important;
+  padding-left: max(12px, env(safe-area-inset-left)) !important;
+  padding-right: max(12px, env(safe-area-inset-right)) !important;
+  padding-bottom: 0 !important;
+  background: #0A0A0A !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  box-sizing: border-box;
+}
+header .nav-logo {
+  display: flex !important;
+  align-items: center;
+  position: static !important;
+  flex-shrink: 0;
+  color: #fff !important;
+  line-height: 0;
+  letter-spacing: 0;
+}
+header .nav-logo .logo-svg-nav {
+  display: block !important;
+  height: 22px;
+  width: auto;
+  flex-shrink: 0;
+  aspect-ratio: 2032 / 208;
+}
+header .hstats {
+  display: none !important;
+}
+header .header-right {
+  display: flex !important;
+  position: static !important;
+  transform: none !important;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+header .header-right .cur-toggle {
+  margin: 0;
+}
+header .mob-menu-btn {
+  display: none !important;
+}
+
+/* Keep the right-hand lot panel. Hide the lot-type / status legends and marketing chrome. */
+.legt, .legr, .strow, .sb > .div,
+#mob-drawer, #mob-overlay, #mob-menu-btn,
+#c-acts, #mob-acts, .wa-float, #modal, #wa-float,
+#site-nav, #site-nav-spacer, #site-footer,
+.mob-sheet, #mob-sheet {
+  display: none !important;
+}
+
+.sb {
+  display: flex !important;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  background: #0A0A0A !important;
+  border-left: 1px solid rgba(200, 169, 110, 0.08);
+  padding: 12px 14px !important;
+  padding-right: max(14px, env(safe-area-inset-right)) !important;
+  padding-bottom: max(12px, env(safe-area-inset-bottom)) !important;
+  box-sizing: border-box;
+}
+.sb::-webkit-scrollbar { width: 2px; }
+.sb::-webkit-scrollbar-thumb { background: rgba(200, 169, 110, 0.2); }
+.lcard { margin-bottom: 0 !important; padding: 8px 10px !important; }
+.lcard.on { display: block !important; }
+.ph { display: block; }
+
+/* One piece of info per line. Panel grows with the viewport; type shrinks to fit. */
+.sb {
+  --sb-font: 0.82rem;
+  font-size: var(--sb-font);
+}
+.sb .lch,
+.sb .lcrow,
+.sb .lck,
+.sb .lcv,
+.sb .lctype,
+.sb .lcid,
+.sb .lcbadge,
+.sb .share-label {
+  white-space: nowrap !important;
+}
+.sb .lch,
+.sb .lcrow {
+  gap: 8px;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+}
+.sb .lcid {
+  min-width: 0;
+  flex: 1 1 auto;
+  font-size: 1.05em;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sb .lctype { flex: 0 0 auto; font-size: 0.72em; }
+.sb .lcrow { padding-top: 3px !important; padding-bottom: 3px !important; }
+.sb .lck { flex: 0 0 auto; padding-right: 6px; font-size: 0.78em; }
+.sb .lcv {
+  flex: 1 1 auto;
+  text-align: right;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.95em;
+}
+
+
+
+/* Status still appears as text / a badge in the detail card, not as map colours. */
+.share-block { margin: 8px 0 0; padding: 8px 0 0; border-top: 1px solid rgba(255,255,255,0.08); }
+.share-label { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+.lcbadge.is-available { background: rgba(45,106,79,0.25); color: #4CAF7A; border: 1px solid rgba(45,106,79,0.4); }
+.lcbadge.is-pending { background: rgba(212,160,23,0.28); color: #F0C14B; border: 1px solid rgba(212,160,23,0.5); }
+.lcbadge.is-making_payment { background: rgba(61,122,140,0.32); color: #8ED3E0; border: 1px solid rgba(61,122,140,0.55); }
+.lcbadge.is-sold { background: rgba(139,26,26,0.25); color: #E57373; border: 1px solid rgba(139,26,26,0.4); }
+.lcbadge.is-split { background: rgba(107,76,154,0.32); color: #C9B6E8; border: 1px solid rgba(107,76,154,0.55); }
+.lcbadge.is-firm30 { background: rgba(224,122,61,0.28); color: #F4B183; border: 1px solid rgba(224,122,61,0.5); }
+.lcbadge.is-firm100 { background: rgba(42,157,143,0.28); color: #7FDECB; border: 1px solid rgba(42,157,143,0.5); }
+.lcid { overflow-wrap: anywhere; }
+
+#ta-boot {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0A0A0A;
+  color: #E8D4A8;
+  font-family: var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  z-index: 40;
+}
+#ta-boot[hidden] { display: none !important; }
+
+/* Portrait: hide the plan and ask the user to rotate. */
+#rotate-gate {
+  position: fixed !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  width: 100dvw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  z-index: 2147483647 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  background: #0A0A0A !important;
+  pointer-events: auto !important;
+  padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+  box-sizing: border-box;
+}
+#rotate-gate[hidden] { display: none !important; }
+.rotate-card { text-align: center; max-width: 22rem; }
+.rotate-logo {
+  color: #fff;
+  line-height: 0;
+  letter-spacing: 0;
+  margin: 0 0 28px;
+}
+.rotate-logo .logo-svg-nav {
+  display: block;
+  height: 28px;
+  width: auto;
+  margin: 0 auto;
+  aspect-ratio: 2032 / 208;
+  color: #fff;
+}
+.rotate-icon {
+  width: 72px;
+  height: 44px;
+  margin: 0 auto 22px;
+  border: 2px solid #C8A96E;
+  border-radius: 8px;
+  position: relative;
+  animation: rotate-hint 1.6s ease-in-out infinite;
+}
+.rotate-icon::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: 12px;
+  width: 4px;
+  height: 16px;
+  background: #C8A96E;
+  border-radius: 0 2px 2px 0;
+}
+#rotate-msg {
+  margin: 0;
+  font-family: var(--sans), Montserrat, sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #E8D4A8;
+}
+@keyframes rotate-hint {
+  0%, 100% { transform: rotate(0deg); }
+  40% { transform: rotate(90deg); }
+}
+
+
+/* Compact private block so status + button + blur fit on a small landscape iPhone. */
+.sb { padding-top: 8px !important; }
+#c-status-row { margin-top: 2px; }
+.private-info.is-blurred { max-height: 5.6rem; }
+#build-tag {
+  position: fixed;
+  left: max(6px, env(safe-area-inset-left));
+  bottom: max(4px, env(safe-area-inset-bottom));
+  z-index: 30;
+  font-family: var(--sans), Montserrat, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  color: rgba(255,255,255,0.38);
+  pointer-events: none;
+  line-height: 1;
+}
+#data-notice {
+  position: fixed;
+  left: max(8px, env(safe-area-inset-left));
+  top: auto;
+  bottom: max(18px, calc(env(safe-area-inset-bottom) + 14px));
+  z-index: 30;
+  max-width: 46vw;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background: rgba(10,10,10,0.82);
+  color: #E8D4A8;
+  font-family: var(--sans), Montserrat, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  pointer-events: none;
+}
+#data-notice[hidden] { display: none !important; }
